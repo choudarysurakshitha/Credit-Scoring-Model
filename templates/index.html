@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Credit Scoring System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🏦 Credit Scoring System</h1>
+
+    <form method="POST">
+
+        <label>Age</label>
+        <input type="number" name="age" required>
+
+        <label>Monthly Income (₹)</label>
+        <input type="number" name="income" required>
+
+        <label>Loan Amount (₹)</label>
+        <input type="number" name="loan" required>
+
+        <label>Credit History</label>
+
+        <select name="history">
+
+            <option value="1">Good</option>
+
+            <option value="0">Bad</option>
+
+        </select>
+
+        <button type="submit">Predict</button>
+
+    </form>
+
+   {% if result %}
+
+<div class="result">
+
+    <h2>📄 Credit Report</h2>
+
+    <h3>💳 Credit Score</h3>
+
+    <h2>{{ score }}/100</h2>
+
+    <hr>
+
+    <h3>📊 Risk Level</h3>
+
+    <p>{{ risk }}</p>
+
+    <hr>
+
+    <h3>🏦 Loan Status</h3>
+
+    <p>{{ result }}</p>
+
+    <hr>
+
+    {% if "Approved" in result %}
+        <p><b>✅ Recommendation:</b> Applicant is eligible for the requested loan.</p>
+    {% else %}
+        <p><b>❌ Recommendation:</b> Improve credit history or reduce loan amount before reapplying.</p>
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>
