@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreditScore AI | Risk Assessment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/"> <span class="brand-icon">C</span> CreditScore <span class="ai">AI</span></a>
+    <span class="status"><span class="dot"></span> ML MODEL APPLICATION</span>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <div class="eyebrow">MACHINE LEARNING · CREDIT ANALYSIS</div>
+        <h1>Credit Risk <span>Assessment</span></h1>
+        <p>Enter applicant information to classify their credit category using a trained machine learning model.</p>
+        <div class="hero-tags">
+            <span>● Random Forest</span>
+            <span>● Predictive Analytics</span>
+            <span>● Educational Demo</span>
+        </div>
+    </section>
+
+    {% if result %}
+    <section class="result-card {% if result == 'Good Credit Category' %}good{% else %}bad{% endif %}">
+        <div>
+            <div class="eyebrow">PREDICTION RESULT</div>
+            <h2>{{ result }}</h2>
+            <p>
+                {% if result == 'Good Credit Category' %}
+                The model classified this application in the good-credit category.
+                {% else %}
+                The model classified this application in the bad-credit category.
+                {% endif %}
+            </p>
+            {% if probability is not none %}
+            <div class="probability">
+                Estimated probability of good credit:
+                <strong>{{ probability }}%</strong>
+            </div>
+            {% endif %}
+        </div>
+        <div class="result-symbol">{% if result == 'Good Credit Category' %}✓{% else %}!{% endif %}</div>
+    </section>
+    {% endif %}
+
+    {% if error %}
+    <div class="error-box">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        <section class="form-card">
+            <div class="section-heading">
+                <div class="number">01</div>
+                <div>
+                    <h2>Applicant Profile</h2>
+                    <p>Basic financial and personal information</p>
+                </div>
+            </div>
+            <div class="form-grid">
+                <label>Age (years)
+                    <input type="number" name="age" min="18" max="100" value="30" required>
+                </label>
+                <label>Loan Duration (months)
+                    <input type="number" name="duration" min="1" value="12" required>
+                </label>
+                <label>Credit Amount
+                    <input type="number" name="credit_amount" min="1" value="2000" required>
+                </label>
+                <label>Installment Commitment (1–4)
+                    <select name="installment_commitment" required>
+                        <option value="1">1 - Low</option>
+                        <option value="2" selected>2 - Moderate</option>
+                        <option value="3">3 - High</option>
+                        <option value="4">4 - Very high</option>
+                    </select>
+                </label>
+                <label>Years at Current Residence (1–4)
+                    <select name="residence_since" required>
+                        <option value="1">1 year or less</option>
+                        <option value="2" selected>2 years</option>
+                        <option value="3">3 years</option>
+                        <option value="4">4 years or more</option>
+                    </select>
+                </label>
+                <label>Existing Credits (1–4)
+                    <select name="existing_credits" required>
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </label>
+                <label>Number of Dependents
+                    <select name="num_dependents" required>
+                        <option value="1" selected>1</option>
+                        <option value="2">2 or more</option>
+                    </select>
+                </label>
+                <label>Personal Status
+                    <select name="personal_status" required>
+                        <option value="male single">Male, single</option>
+                        <option value="female div/dep/mar">Female, divorced/dependent/married</option>
+                        <option value="male div/sep">Male, divorced/separated</option>
+                        <option value="male mar/wid">Male, married/widowed</option>
+                    </select>
+                </label>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <div class="section-heading">
+                <div class="number">02</div>
+                <div>
+                    <h2>Financial History</h2>
+                    <p>Account, savings, employment and credit background</p>
+                </div>
+            </div>
+            <div class="form-grid">
+                <label>Checking Account Status
+                    <select name="checking_status" required>
+                        <option value="no checking">No checking account</option>
+                        <option value="<0">Below 0</option>
+                        <option value="0<=X<200">0 to below 200</option>
+                        <option value=">=200">200 or above</option>
+                    </select>
+                </label>
+                <label>Credit History
+                    <select name="credit_history" required>
+                        <option value="existing paid">Existing credits paid</option>
+                        <option value="critical/other existing credit">Critical / other existing credit</option>
+                        <option value="delayed previously">Delayed previously</option>
+                        <option value="all paid">All credits paid</option>
+                        <option value="no credits/all paid">No credits / all paid</option>
+                    </select>
+                </label>
+                <label>Savings Status
+                    <select name="savings_status" required>
+                        <option value="no known savings">No known savings</option>
+                        <option value="<100">Below 100</option>
+                        <option value="100<=X<500">100 to below 500</option>
+                        <option value="500<=X<1000">500 to below 1000</option>
+                        <option value=">=1000">1000 or above</option>
+                    </select>
+                </label>
+                <label>Employment Duration
+                    <select name="employment" required>
+                        <option value="1<=X<4">1 to below 4 years</option>
+                        <option value="<1">Below 1 year</option>
+                        <option value="4<=X<7">4 to below 7 years</option>
+                        <option value=">=7">7 years or more</option>
+                        <option value="unemployed">Unemployed</option>
+                    </select>
+                </label>
+                <label>Loan Purpose
+                    <select name="purpose" required>
+                        <option value="radio/tv">Radio / TV</option>
+                        <option value="education">Education</option>
+                        <option value="furniture/equipment">Furniture / equipment</option>
+                        <option value="new car">New car</option>
+                        <option value="used car">Used car</option>
+                        <option value="business">Business</option>
+                        <option value="domestic appliance">Domestic appliance</option>
+                        <option value="repairs">Repairs</option>
+                        <option value="other">Other</option>
+                        <option value="retraining">Retraining</option>
+                    </select>
+                </label>
+                <label>Property
+                    <select name="property_magnitude" required>
+                        <option value="real estate">Real estate</option>
+                        <option value="life insurance">Life insurance</option>
+                        <option value="car">Car or other property</option>
+                        <option value="no known property">No known property</option>
+                    </select>
+                </label>
+                <label>Other Payment Plans
+                    <select name="other_payment_plans" required>
+                        <option value="none">None</option>
+                        <option value="bank">Bank</option>
+                        <option value="stores">Stores</option>
+                    </select>
+                </label>
+                <label>Housing
+                    <select name="housing" required>
+                        <option value="own">Own</option>
+                        <option value="rent">Rent</option>
+                        <option value="for free">Provided free</option>
+                    </select>
+                </label>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <div class="section-heading">
+                <div class="number">03</div>
+                <div>
+                    <h2>Additional Details</h2>
+                    <p>Employment type and other applicant information</p>
+                </div>
+            </div>
+            <div class="form-grid">
+                <label>Other Parties
+                    <select name="other_parties" required>
+                        <option value="none">None</option>
+                        <option value="co applicant">Co-applicant</option>
+                        <option value="guarantor">Guarantor</option>
+                    </select>
+                </label>
+                <label>Job Type
+                    <select name="job" required>
+                        <option value="skilled">Skilled employee</option>
+                        <option value="unskilled - resident">Unskilled resident</option>
+                        <option value="unskilled - non-resident">Unskilled non-resident</option>
+                        <option value="high qualif/self emp/mgmt">Highly qualified / self-employed / management</option>
+                    </select>
+                </label>
+                <label>Own Telephone?
+                    <select name="own_telephone" required>
+                        <option value="yes">Yes</option>
+                        <option value="none">No</option>
+                    </select>
+                </label>
+                <label>Foreign Worker?
+                    <select name="foreign_worker" required>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </label>
+            </div>
+        </section>
+
+        <div class="submit-area">
+            <p>Review the details before generating the prediction.</p>
+            <button type="submit">Predict Credit Risk <span>→</span></button>
+        </div>
+    </form>
+
+    <footer>
+        <strong>CreditScore AI</strong>
+        <p>Academic machine learning project · Not an official CIBIL score or a lending decision.</p>
+    </footer>
+</main>
+</body>
+</html>

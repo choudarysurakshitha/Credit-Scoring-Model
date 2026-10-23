@@ -1,0 +1,21 @@
+{
+    "project": "Credit Scoring Model",
+    "dataset": "OpenML German Credit (credit-g), version 1",
+    "target_definition": {
+        "1": "good credit category",
+        "0": "bad credit category"
+    },
+    "training_rows": 800,
+    "testing_rows": 200,
+    "feature_count": 20,
+    "best_model_by_roc_auc": "Random Forest",
+    "best_model_metrics": {
+        "model": "Random Forest",
+        "accuracy": 0.72,
+        "precision": 0.8181818181818182,
+        "recall": 0.7714285714285715,
+        "f1_score": 0.7941176470588235,
+        "roc_auc": 0.7982738095238096
+    },
+    "note": "Educational benchmark only. This is not an official CIBIL score calculator or a lending decision system."
+}
